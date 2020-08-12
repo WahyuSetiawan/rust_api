@@ -52,14 +52,24 @@
 
 // let conn = Connection::open("");
 
+use rusqlite::{Connection};
+
 use std::env;
 
-pub fn connection() {
+pub fn connection() -> Result<Connection,String> {
     let path = env::current_dir();
-    match path {
-        Ok(pathD) => println!("the path is {}", pathD.display()),
-        _ => println!("error getting path"),
-    }
 
-    // println!("setting {}", path.display());
+    if let Ok(path_database) = path {
+        let path_database_employee: String = format!("{}{}", path_database.display(), "\\employe.db");
+
+        let connection = Connection::open(path_database_employee);
+
+        if let Ok(connection_database ) = connection {
+          return  Ok(connection_database);
+        }else{
+          return  Err("not gettering connection on database".to_string());
+        }
+    }else{
+      return  Err("error getting path".to_string());
+    }
 }

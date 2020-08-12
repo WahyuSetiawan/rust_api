@@ -8,5 +8,5 @@ mod services;
 fn main() {
     // rocket::ignite().mount("/", routes![services::index, hello, other::world,])
     // .launch();
-    database::connection();
+    database::testing_insert_data();
 }
