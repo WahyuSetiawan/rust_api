@@ -1,4 +1,4 @@
-use rusqlite::{Connection, params};
+use rusqlite::{Connection, Statement, params, Error};
 
 use crate::database;
 pub struct Employee{
@@ -25,5 +25,27 @@ impl Employee {
         }else{
             return Err(format!("cant connect into database sqlite {:?}", connection));
         }
+    }
+
+    pub fn getAll() -> Vec<Employee>{
+        let mut all_employee:Vec<Employee> = Vec::new();
+        let connection = database::connection();
+
+        if let Ok(conn) = connection{
+            let mut statement_get_all_employee= conn.prepare("select id, name from employee").unwrap();
+
+
+            all_employee = statement_get_all_employee.query_map(params![], |row|{
+                Ok(
+                    Employee{
+                        people_id: row.get(0).expect("not column for id 1"),
+                        name: row.get(1).expect("not column for id 2")
+                })
+            }).unwrap().map(|a| {
+                a.unwrap()
+            }).collect::<Vec<Employee>>();
+        }
+
+        return all_employee;
     }
 }

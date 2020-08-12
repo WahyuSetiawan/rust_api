@@ -8,7 +8,7 @@ mod services;
 mod model;
 
 fn main() {
-    // rocket::ignite().mount("/", routes![services::index, hello, other::world,])
-    // .launch();
+    let data_employee = model::Employee::getAll();
 
+    println!("{:?}",data_employee.len());
 }
