@@ -5,8 +5,10 @@ extern crate rocket;
 mod database;
 mod services;
 
+mod model;
+
 fn main() {
     // rocket::ignite().mount("/", routes![services::index, hello, other::world,])
     // .launch();
-    database::testing_insert_data();
+
 }
