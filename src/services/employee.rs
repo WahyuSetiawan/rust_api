@@ -1,9 +1,15 @@
-#[GET("employee")]
-fn get() -> &'static str{
+#![feature(proc_macro_hygiene, decl_macro)]
 
+#[get("/employee")]
+pub fn get() -> &'static str {
+    return "get all employee";
 }
 
-#[POST("employee")]
-fn set() -> &'static str{
-    
+#[post("/employee")]
+pub fn set() -> &'static str {
+    "set employee"
+}
+
+pub fn get_all() -> &'static str {
+    "get all employee"
 }

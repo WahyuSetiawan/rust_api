@@ -1,3 +1,4 @@
-pub fn index() -> &'static str{
+#[get("/")]
+pub fn index() -> &'static str {
     "Hello this is public page"
 }

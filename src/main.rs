@@ -8,7 +8,10 @@ mod services;
 mod model;
 
 fn main() {
-    let data_employee = model::Employee::get(1).expect("");
-
-    println!("{:?}",data_employee);
+    rocket::ignite()
+        .mount(
+            "/",
+            routes![services::public::index, services::employee::get],
+        )
+        .launch();
 }

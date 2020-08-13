@@ -1,6 +1,2 @@
-mod public;
-
-#[get("/")]
-pub fn index()-> &'static str{
-    return public::index();
-}
+pub mod employee;
+pub mod public;
