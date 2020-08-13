@@ -8,7 +8,7 @@ mod services;
 mod model;
 
 fn main() {
-    let data_employee = model::Employee::getAll();
+    let data_employee = model::Employee::get(1).expect("");
 
-    println!("{:?}",data_employee.len());
+    println!("{:?}",data_employee);
 }

@@ -1,6 +1,8 @@
-use rusqlite::{Connection, Statement, params, Error};
+use rusqlite::{Connection, Statement, params, Error, named_params};
 
 use crate::database;
+
+#[derive(Debug)]
 pub struct Employee{
     pub people_id : i32,
     pub name: String,
@@ -47,5 +49,24 @@ impl Employee {
         }
 
         return all_employee;
+    }
+
+    pub fn get(id: i32) ->Option<Self>{
+        let connection = database::connection();
+
+        if let Ok(conn) = connection{
+            let mut statement_get_all_employee= conn.prepare("select id, name from employee where id = :id").expect("");
+
+            let mut row = statement_get_all_employee.query_named(named_params!{":id": id}).expect("");
+
+            if let Some(data) = row.next().expect(""){
+                return Some(Employee{
+                    people_id: data.get(0).expect(""),
+                    name: data.get(1).expect(""),
+                });
+            }
+        }
+
+        return None;
     }
 }
