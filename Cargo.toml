@@ -1,15 +1,19 @@
 [package]
-name = "restApi"
-version = "0.1.0"
 authors = ["wahyu setiawan <wahyu.creator911@gmail.com>"]
 edition = "2018"
+name = "restApi"
+version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+mysql = "18.1.0"
 rocket = "0.4.5"
-mysql = "18.2.0"
+rocket_contrib = "0.4.5"
+serde = "1.0.115"
+serde_derive = "1.0.115"
+refinery = { version = "0.3", features = ["mysql"]}
 
 [dependencies.rusqlite]
-version = "0.23.1"
 features = ["bundled"]
+version = "0.23.1"

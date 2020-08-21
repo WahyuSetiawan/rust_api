@@ -1,8 +1,9 @@
-use rusqlite::{named_params, params, Connection, Error, Statement};
+use rusqlite::{named_params, params};
 
 use crate::database;
+use serde::Serialize;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Employee {
     pub people_id: i32,
     pub name: String,
