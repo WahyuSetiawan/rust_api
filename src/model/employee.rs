@@ -1,10 +1,8 @@
-// use rusqlite::{named_params, params};
-
 use crate::database;
 use serde::Serialize;
 
 use mysql::prelude::*;
-use mysql::*;
+// use mysql::*;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Employee {
@@ -19,39 +17,40 @@ impl Employee {
         let result = connection_database.as_mut().exec_drop(
             "update employee set name = :name where id = :id",
             params! {
-            "id" => self.people_id,
-            "name" => &self.name,},
+                "id" => self.people_id,
+                "name" => &self.name,
+            },
         );
 
         if let Ok(res) = result {
-            Ok(true);
+            return Ok(true);
         } else {
-            Err("update data server".to_string());
+            return Err("a commat".to_string());
         }
     }
 
-    // pub fn insert(&self) -> Result<usize, String> {
-    //     let connection = database::connectionDatabase();
-    //     if let Ok(conn) = connection {
-    //         let status_insert = conn.query_map(
-    //             "insert into employee (id, name) values (?1, ?2)",
-    //             params![self.people_id, self.name],
-    //         );
+    pub fn insert(&self) -> Result<bool, String> {
+        let connection = database::connectionDatabase();
+        if let Ok(conn) = connection {
+            let status_insert = conn.as_mut().exec_drop(
+                "insert into employee (id, name) values (:id, :name)",
+                params! {"id" =>self.people_id, "name" => &self.name},
+            );
 
-    //         if let Ok(status) = status_insert {
-    //             return Ok(status);
-    //         } else {
-    //             println!("{:?}", status_insert);
+            if let Ok(status) = status_insert {
+                return Ok(true);
+            } else {
+                println!("{:?}", status_insert);
 
-    //             return Err("cannot to insert data".to_string());
-    //         }
-    //     } else {
-    //         return Err(format!(
-    //             "cant connect into database sqlite {:?}",
-    //             connection
-    //         ));
-    //     }
-    // }
+                return Err("cannot to insert data".to_string());
+            }
+        } else {
+            return Err(format!(
+                "cant connect into database sqlite {:?}",
+                connection
+            ));
+        }
+    }
 
     // pub fn getAll() -> Vec<Employee> {
     //     let mut all_employee: Vec<Employee> = Vec::new();

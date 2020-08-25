@@ -13,12 +13,6 @@ mod services;
 
 mod model;
 
-// mod embedded {
-//     use refinery::embed_migrations;
-
-//     embed_migrations!("migration");
-// }
-
 fn main() {
     // rocket::ignite()
     //     .mount(
@@ -30,12 +24,4 @@ fn main() {
     //         ],
     //     )
     //     .launch();
-
-    // let url = "mysql://root:08111993@localhost:3306/testing";
-
-    // let pool = Pool::new(url).unwrap();
-
-    // let mut conn = pool.get_conn().unwrap();
-
-    // embedded::migrations::runner().run(&mut conn).unwrap();
 }
