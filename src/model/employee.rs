@@ -12,26 +12,31 @@ pub struct Employee {
 
 impl Employee {
     pub fn update(&self) -> Result<bool, String> {
-        let mut connection_database = database::connectionDatabase().unwrap();
+        let connection_database = database::connectionDatabase();
 
-        let result = connection_database.as_mut().exec_drop(
-            "update employee set name = :name where id = :id",
-            params! {
-                "id" => self.people_id,
-                "name" => &self.name,
-            },
-        );
+        if let Ok(mut conn) = connection_database {
+            let result = conn.as_mut().exec_drop(
+                "update employee set name = :name where id = :id",
+                params! {
+                    "id" => self.people_id,
+                    "name" => &self.name,
+                },
+            );
 
-        if let Ok(res) = result {
-            return Ok(true);
-        } else {
-            return Err("a commat".to_string());
+            if let Ok(res) = result {
+                return Ok(true);
+            } else {
+                return Err("a commat".to_string());
+            }
         }
+
+        return Err("nothing todo with update employee".to_string());
     }
 
     pub fn insert(&self) -> Result<bool, String> {
         let connection = database::connectionDatabase();
-        if let Ok(conn) = connection {
+
+        if let Ok(mut conn) = connection {
             let status_insert = conn.as_mut().exec_drop(
                 "insert into employee (id, name) values (:id, :name)",
                 params! {"id" =>self.people_id, "name" => &self.name},
@@ -52,49 +57,43 @@ impl Employee {
         }
     }
 
-    // pub fn getAll() -> Vec<Employee> {
-    //     let mut all_employee: Vec<Employee> = Vec::new();
-    //     let connection = database::connectionDatabase();
+    pub fn getAll() -> Vec<Employee> {
+        let mut all_employee: Vec<Employee> = Vec::new();
+        let connection = database::connectionDatabase();
 
-    //     if let Ok(conn) = connection {
-    //         // let mut statement_get_all_employee =
-    //         //     conn.query_map("select id, name from employee").unwrap();
+        if let Ok(mut conn) = connection {
+            let data = conn.query_map("select id, name from employee", |(id, name)| Employee {
+                people_id: id,
+                name: name,
+            });
 
-    //         // all_employee = statement_get_all_employee
-    //         //     .query_map(params![], |row| {
-    //         //         Ok(Employee {
-    //         //             people_id: row.get(0).expect("not column for id 1"),
-    //         //             name: row.get(1).expect("not column for id 2"),
-    //         //         })
-    //         //     })
-    //         //     .unwrap()
-    //         //     .map(|a| a.unwrap())
-    //         //     .collect::<Vec<Employee>>();
-    //     }
+            if let Ok(da) = data {
+                all_employee = da;
+            }
+        }
 
-    //     return all_employee;
-    // }
+        return all_employee;
+    }
 
-    // pub fn get(id: i32) -> Option<Self> {
-    //     let connection = database::connectionDatabase();
+    pub fn get(id: i32) -> Option<Self> {
+        let connection = database::connectionDatabase();
 
-    //     if let Ok(conn) = connection {
-    //         // let mut statement_get_all_employee = conn
-    //         //     .query_map("select id, name from employee where id = :id")
-    //         //     .expect("");
+        if let Ok(mut conn) = connection {
+            let data = conn.as_mut().query_map(
+                format!("select id, name from employee where id = {}", id),
+                |(id, name)| Employee {
+                    people_id: id,
+                    name: name,
+                },
+            );
 
-    //         // let mut row = statement_get_all_employee
-    //         //     .query_named(named_params! {":id": id})
-    //         //     .expect("");
+            if let Ok(data1) = data {
+                if data1.len() > 0 {
+                    Some(data1.first());
+                }
+            }
+        }
 
-    //         // if let Some(data) = row.next().expect("") {
-    //         //     return Some(Employee {
-    //         //         people_id: data.get(0).expect(""),
-    //         //         name: data.get(1).expect(""),
-    //         //     });
-    //         // }
-    //     }
-
-    //     return None;
-    // }
+        return None;
+    }
 }

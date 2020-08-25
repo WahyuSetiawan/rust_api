@@ -14,14 +14,15 @@ mod services;
 mod model;
 
 fn main() {
-    // rocket::ignite()
-    //     .mount(
-    //         "/",
-    //         routes![
-    //             services::public::index,
-    //             services::employee::getSingle,
-    //             services::employee::get
-    //         ],
-    //     )
-    //     .launch();
+    rocket::ignite()
+        .mount(
+            "/",
+            routes![
+                services::public::index,
+                services::employee::getSingle,
+                services::employee::get,
+                services::employee::set
+            ],
+        )
+        .launch();
 }
