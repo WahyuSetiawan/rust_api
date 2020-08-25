@@ -10,6 +10,7 @@ version = "0.1.0"
 mysql = "18.1.0"
 rocket = "0.4.5"
 rocket_contrib = "0.4.5"
+envfile= "0.2.1"
 serde = "1.0.115"
 serde_derive = "1.0.115"
 refinery = { version = "0.3", features = ["mysql"]}
