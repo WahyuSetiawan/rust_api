@@ -20,26 +20,26 @@ pub fn set() -> &'static str {
     "set employee"
 }
 
-#[get["/employee/<id>"]]
-pub fn getSingle(id: &RawStr) -> Json<Message> {
-    match id.url_decode() {
-        Ok(id_employee) => {
-            print!("{:?}", id_employee);
+// #[get["/employee/<id>"]]
+// pub fn getSingle(id: &RawStr) -> Json<Message> {
+//     match id.url_decode() {
+//         Ok(id_employee) => {
+//             print!("{:?}", id_employee);
 
-            let id: i32 = id_employee.parse().expect("msg");
+//             let id: i32 = id_employee.parse().expect("msg");
 
-            let employee_single = model::Employee::get(id);
+//             let employee_single = model::Employee::get(id);
 
-            return Json(Message {
-                status: 200,
-                data: employee_single,
-            });
-        }
-        _ => println!("cannot lanjut progress"),
-    }
+//             return Json(Message {
+//                 status: 200,
+//                 data: employee_single,
+//             });
+//         }
+//         _ => println!("cannot lanjut progress"),
+//     }
 
-    return Json(Message {
-        status: 404,
-        data: None,
-    });
-}
+//     return Json(Message {
+//         status: 404,
+//         data: None,
+//     });
+// }

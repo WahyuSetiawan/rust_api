@@ -5,21 +5,22 @@ extern crate rocket;
 extern crate serde_derive;
 extern crate envfile;
 
-use mysql::*;
 use envfile::EnvFile;
+use mysql::*;
 use std::io;
 use std::path::Path;
 
 mod database;
+mod env;
 mod services;
 
 mod model;
 
-mod embedded {
-    use refinery::embed_migrations;
+// mod embedded {
+//     use refinery::embed_migrations;
 
-    embed_migrations!("migration");
-}
+//     embed_migrations!("migration");
+// }
 
 fn main() {
     // rocket::ignite()
@@ -41,13 +42,5 @@ fn main() {
 
     // embedded::migrations::runner().run(&mut conn).unwrap();
 
-    let mut envfile = EnvFile::new(&Path::new(".env")).unwrap();
-
-
-    for (key, value) in &envfile.store {
-        println!("{}: {}", key, value);
-    }
-
-    envfile.update("ID", "example");
-    println!("ID: {}", envfile.get("ID").unwrap_or(""));
+    database::connectionDatabase();
 }
