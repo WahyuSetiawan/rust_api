@@ -4,11 +4,8 @@ extern crate rocket;
 #[macro_use]
 extern crate serde_derive;
 extern crate envfile;
-
-use envfile::EnvFile;
-use mysql::*;
-use std::io;
-use std::path::Path;
+#[macro_use]
+extern crate mysql;
 
 mod database;
 mod env;
@@ -41,6 +38,4 @@ fn main() {
     // let mut conn = pool.get_conn().unwrap();
 
     // embedded::migrations::runner().run(&mut conn).unwrap();
-
-    database::connectionDatabase();
 }

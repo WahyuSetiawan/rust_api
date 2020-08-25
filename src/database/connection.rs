@@ -1,9 +1,10 @@
-use rusqlite::Connection;
+// use rusqlite::Connection;
 
-use std::env;
+// use std::env;
 
 use crate::env as envFileUse;
 use mysql::*;
+use mysql::prelude::*;
 
 mod embedded {
     use refinery::embed_migrations;
@@ -30,7 +31,7 @@ mod embedded {
 //     }
 // }
 
-pub fn connectionDatabase() -> PooledConn {
+pub fn connectionDatabase() -> Result<PooledConn> {
     let mut envfile = unsafe { envFileUse::envComponentSingleton.getData() };
     let data = &envfile.store;
 
@@ -44,5 +45,5 @@ pub fn connectionDatabase() -> PooledConn {
 
     embedded::migrations::runner().run(&mut conn).unwrap();
 
-    return conn;
+    return Ok(conn);
 }
